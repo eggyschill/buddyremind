@@ -6,17 +6,22 @@ node_modules/
 # Testing
 /coverage
 
-# Production
+# Production builds
 /build
+/dist
+frontend/build
 
-# Environment variables
+# Environment variables - critical for security
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
 
 # Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -26,12 +31,19 @@ yarn-error.log*
 .vscode/
 *.swp
 *.swo
-
-# OS Files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Deployment configs that might contain secrets
+.vercel
+.netlify
+.firebase/
+
+# Local SSL certificates
+*.pem
+*.key
+*.crt
