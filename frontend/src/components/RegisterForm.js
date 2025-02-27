@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import '../assets/css/Auth.css';
+import api from '../services/api';
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -76,6 +77,10 @@ const RegisterForm = () => {
     
     setLoading(true);
     
+    // Add debugging code here, before the try/catch block
+    console.log('API URL:', api.defaults.baseURL);
+    console.log('Register endpoint:', api.defaults.baseURL + '/auth/register');
+    
     try {
       await register({
         name: formData.name,
@@ -86,6 +91,12 @@ const RegisterForm = () => {
       // Redirect to dashboard on successful registration
       navigate('/dashboard');
     } catch (err) {
+      // Add enhanced error logging here
+      console.error('Registration failed:', err);
+      console.error('Error request configuration:', err.config);
+      console.error('Error status:', err.response?.status);
+      console.error('Error data:', err.response?.data);
+      
       // Error will be set in the auth context
     } finally {
       setLoading(false);

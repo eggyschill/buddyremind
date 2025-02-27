@@ -41,20 +41,49 @@ const register = async (userData) => {
   setLoading(true);
   setError(null);
   
+  // API debugging information
+  console.log('Attempting registration with:', {
+    ...userData,
+    password: '[REDACTED]' // Don't log actual password
+  });
+  
+  // Seeing api base url
+  console.log('API Base URL:', authService.getBaseURL ? 
+              authService.getBaseURL() : 
+              'Not directly accessible - check network tab');
+  
   try {
+    console.log('Sending registration request...');
     const response = await authService.register(userData);
+    console.log('Registration successful!', response);
+    
     localStorage.setItem('token', response.data.token);
     setCurrentUser(response.data.data);
     return response.data;
   } catch (err) {
-    console.error('Registration failed:', err);
-    // Add more detailed error logging here
-    console.error('Error response:', err.response);
-    console.error('Error details:', err.response?.data);
+    console.error('=======================================');
+    console.error('Registration failed. Details:');
+    console.error('Error message:', err.message);
     
-    // Set a more informative error message
-    setError(err.response?.data?.message || 
-             `Registration failed: ${err.message}. Status: ${err.response?.status}`);
+    // Network error (server not responding, etc)
+    if (!err.response) {
+      console.error('Network error - no response from server');
+      console.error('Check if backend server is running on the correct port');
+      setError('Unable to connect to the server. Please check your connection or try again later.');
+    } 
+    // Server responded with an error status code
+    else {
+      console.error('Status code:', err.response.status);
+      console.error('Response data:', err.response.data);
+      console.error('Request URL:', err.config.url);
+      console.error('Request method:', err.config.method);
+      console.error('Request headers:', err.config.headers);
+      
+      // Set a more informative error message
+      setError(err.response?.data?.message || 
+              `Registration failed (${err.response.status}): ${err.message}`);
+    }
+    console.error('=======================================');
     throw err;
   } finally {
     setLoading(false);

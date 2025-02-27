@@ -1,4 +1,4 @@
-// models/UserStats.js
+// models/UserStats.js - Updated model with enum fixes
 const mongoose = require('mongoose');
 
 const UserStatsSchema = new mongoose.Schema({
@@ -28,12 +28,12 @@ const UserStatsSchema = new mongoose.Schema({
   timePatterns: {
     mostProductiveDay: {
       type: String,
-      enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', null],
       default: null
     },
     mostProductiveTime: {
-      type: String, // e.g. "morning", "afternoon", "evening"
-      enum: ['morning', 'afternoon', 'evening', 'night'],
+      type: String,
+      enum: ['morning', 'afternoon', 'evening', 'night', null],
       default: null
     },
     averageLoginTime: { type: Date },
@@ -73,7 +73,7 @@ const UserStatsSchema = new mongoose.Schema({
     },
     preferredMessageStyle: {
       type: String,
-      enum: ['motivational', 'direct', 'friendly', 'professional', 'humorous'],
+      enum: ['motivational', 'direct', 'friendly', 'professional', 'humorous', null],
       default: null
     }
   },

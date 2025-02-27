@@ -1,9 +1,10 @@
 // src/services/api.js
 import axios from 'axios';
 
-// Create an axios instance
+// In src/services/api.js
+// Ensure the baseURL is correctly pointing to your backend
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api',
+  baseURL: '/api',  // Using relative URL when proxy is set up
   headers: {
     'Content-Type': 'application/json'
   }
