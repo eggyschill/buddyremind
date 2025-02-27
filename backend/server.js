@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-const cors = require('cors');
 
 // Import route files
 const authRoutes = require('./routes/auth');
@@ -29,11 +28,10 @@ mongoose.connect(process.env.MONGODB_URI)
   });
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-	origin: 'http://localhost:3000',
+	origin: 'http://localhost:8000',
 	credentials: true
 }));
 

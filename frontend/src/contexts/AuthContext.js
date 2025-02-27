@@ -36,24 +36,30 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
-  // Register a new user
-  const register = async (userData) => {
-    setLoading(true);
-    setError(null);
+// Register a new user
+const register = async (userData) => {
+  setLoading(true);
+  setError(null);
+  
+  try {
+    const response = await authService.register(userData);
+    localStorage.setItem('token', response.data.token);
+    setCurrentUser(response.data.data);
+    return response.data;
+  } catch (err) {
+    console.error('Registration failed:', err);
+    // Add more detailed error logging here
+    console.error('Error response:', err.response);
+    console.error('Error details:', err.response?.data);
     
-    try {
-      const response = await authService.register(userData);
-      localStorage.setItem('token', response.data.token);
-      setCurrentUser(response.data.data);
-      return response.data;
-    } catch (err) {
-      console.error('Registration failed:', err);
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Set a more informative error message
+    setError(err.response?.data?.message || 
+             `Registration failed: ${err.message}. Status: ${err.response?.status}`);
+    throw err;
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Login user
   const login = async (credentials) => {
